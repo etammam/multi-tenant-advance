@@ -9,7 +9,7 @@ public class Organization : BaseEntity, IAggregateRoot
     public Organization(Guid id, string name, string vatNumber, Guid businessId)
     {
         Contact = new Contact();
-        Address = new Address();
+        Address = new List<Address>();
     }
 
     public Organization(string name, string vatNumber, Guid businessId)
@@ -21,7 +21,7 @@ public class Organization : BaseEntity, IAggregateRoot
     public string Name { get; set; }
     public string Logo { get; set; }
     public Contact Contact { get; set; }
-    public Address Address { get; set; }
+    public ICollection<Address> Address { get; set; }
     public string VatNumber { get; set; }
     public Guid BusinessId { get; set; }
     public Business Business { get; set; }
@@ -50,7 +50,7 @@ public class Organization : BaseEntity, IAggregateRoot
 
     public Organization SetAddress(Address address)
     {
-        Address = address;
+        Address.Add(address);
         return this;
     }
 

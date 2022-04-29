@@ -12,6 +12,11 @@ public class Subscription : BaseEntity
     public Guid OrganizationId { get; set; }
     public Organization Organization { get; set; }
 
+    protected Subscription()
+    {
+
+    }
+
     public Subscription(Guid id, Guid planId, DateTime startDate, int expiry)
     {
         Id = id;

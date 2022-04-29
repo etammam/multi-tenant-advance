@@ -5,6 +5,7 @@ namespace MultiTenant.Catalog.Domain.Entities;
 
 public class Tenant : BaseEntity, IAggregateRoot
 {
+    protected Tenant() { }
     public Tenant(Guid id, string name, Guid resourceId, DatabaseProvider provider)
     {
         Id = id;
@@ -12,12 +13,13 @@ public class Tenant : BaseEntity, IAggregateRoot
         SetResourceId(resourceId);
         SetDatabaseProvider(provider);
     }
-
     public Tenant(string name, Guid resourceId, DatabaseProvider provider)
-        : this(Guid.NewGuid(), name, resourceId, provider)
     {
-
+        SetName(name);
+        SetResourceId(resourceId);
+        SetDatabaseProvider(provider);
     }
+
     public string Identifier { get; private set; }
     public string Name { get; private set; }
     public Resource Resource { get; private set; }

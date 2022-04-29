@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MultiTenant.Catalog.Domain.Entities;
 
-namespace MultiTenant.Catalog.Infrastructure.Configurations
+namespace MultiTenant.Catalog.Infrastructure.Persistence.EntityConfigurations
 {
     public class TenantEntityConfiguration : IEntityTypeConfiguration<Tenant>
     {
@@ -10,6 +10,7 @@ namespace MultiTenant.Catalog.Infrastructure.Configurations
         {
             builder.ToTable("Tenants");
 
+            builder.Property(c => c.Id).ValueGeneratedNever();
 
             builder.Property(c => c.Name)
                 .IsRequired();

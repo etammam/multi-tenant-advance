@@ -7,6 +7,5 @@ public enum DatabaseProvider
     MySql,
     PostgreSql,
     Oracle,
-    Sqlite,
-    Db2
+    Sqlite
 }

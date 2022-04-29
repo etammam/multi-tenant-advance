@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MultiTenant.Catalog.Domain.Entities;
 
-namespace MultiTenant.Catalog.Infrastructure.Configurations
+namespace MultiTenant.Catalog.Infrastructure.Persistence.EntityConfigurations
 {
     public class PlanEntityConfiguration : IEntityTypeConfiguration<Plan>
     {

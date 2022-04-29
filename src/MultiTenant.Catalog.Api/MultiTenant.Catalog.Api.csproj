@@ -7,7 +7,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Migrations.MySql\MultiTenant.Catalog.Infrastructure.Migrations.MySql.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Migrations.Npgsql\MultiTenant.Catalog.Infrastructure.Migrations.Npgsql.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Migrations.Oracle\MultiTenant.Catalog.Infrastructure.Migrations.Oracle.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Migrations.Sqlite\MultiTenant.Catalog.Infrastructure.Migrations.Sqlite.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Migrations.SqlServer\MultiTenant.Catalog.Infrastructure.Migrations.SqlServer.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure.Persistence\MultiTenant.Catalog.Infrastructure.Persistence.csproj" />
+      <ProjectReference Include="..\MultiTenant.Catalog.Infrastructure\MultiTenant.Catalog.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
