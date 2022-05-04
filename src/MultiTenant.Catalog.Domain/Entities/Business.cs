@@ -3,11 +3,13 @@ using MultiTenant.Catalog.Domain.Common;
 
 namespace MultiTenant.Catalog.Domain.Entities;
 
-public class Business: BaseEntity, IAggregateRoot
+public class Business : BaseEntity, IAggregateRoot
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
-    
+
+    public Business() { }
+
     public ICollection<Organization> Organizations { get; set; }
 
     public Business(Guid id, string name, string description)
@@ -18,7 +20,7 @@ public class Business: BaseEntity, IAggregateRoot
     }
 
     public Business(string name, string description)
-    :this(Guid.NewGuid(), name, description)
+        : this(Guid.NewGuid(), name, description)
     {
     }
 
@@ -27,7 +29,7 @@ public class Business: BaseEntity, IAggregateRoot
         Name = Guard.Against.NullOrWhiteSpace(name, nameof(name), "Business name is required");
         return this;
     }
-    
+
     public Business SetDescription(string description)
     {
         Description = description;

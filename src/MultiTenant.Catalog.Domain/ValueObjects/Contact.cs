@@ -12,7 +12,7 @@ public class Contact : ValueObject
 
     public Contact(string website, string email, string phone)
     {
-        SetEmail(website);
+        SetWebsite(website);
         SetEmail(email);
         SetPhone(phone);
     }
@@ -31,5 +31,12 @@ public class Contact : ValueObject
     {
         Phone = phone;
         return this;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Website;
+        yield return Email;
+        yield return Phone;
     }
 }

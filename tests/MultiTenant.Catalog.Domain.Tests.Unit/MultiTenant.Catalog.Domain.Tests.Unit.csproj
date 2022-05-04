@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MultiTenant.Catalog.Domain\MultiTenant.Catalog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

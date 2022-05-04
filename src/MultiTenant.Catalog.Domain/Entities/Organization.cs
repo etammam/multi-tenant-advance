@@ -6,6 +6,12 @@ namespace MultiTenant.Catalog.Domain.Entities;
 
 public class Organization : BaseEntity, IAggregateRoot
 {
+    public Organization()
+    {
+        Contact = new Contact();
+        Address = new List<Address>();
+    }
+
     public Organization(Guid id, string name, string vatNumber, Guid businessId)
     {
         Contact = new Contact();

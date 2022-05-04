@@ -1,4 +1,5 @@
-﻿using MultiTenant.Catalog.Domain.Common;
+﻿using Ardalis.GuardClauses;
+using MultiTenant.Catalog.Domain.Common;
 using MultiTenant.Catalog.Domain.Exceptions;
 
 namespace MultiTenant.Catalog.Domain.Entities;
@@ -12,7 +13,7 @@ public class Subscription : BaseEntity
     public Guid OrganizationId { get; set; }
     public Organization Organization { get; set; }
 
-    protected Subscription()
+    public Subscription()
     {
 
     }
@@ -61,7 +62,8 @@ public class Subscription : BaseEntity
 
     public Subscription SetExpiry(int expiry)
     {
-        Expiry = expiry;
+        Expiry = Guard.Against.Negative(expiry, nameof(expiry),
+            "Expiry should be greater than or equal 0");
         return this;
     }
 

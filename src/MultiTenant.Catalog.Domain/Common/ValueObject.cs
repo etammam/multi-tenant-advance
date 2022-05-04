@@ -1,83 +1,39 @@
-﻿using MultiTenant.Catalog.Domain.Attributes;
-using System.Reflection;
+﻿namespace MultiTenant.Catalog.Domain.Common;
 
-namespace MultiTenant.Catalog.Domain.Common;
-
-public abstract class ValueObject : IEquatable<ValueObject>
+public abstract class ValueObject
 {
-    private List<PropertyInfo> _properties = null!;
-    private List<FieldInfo> _fields = null!;
-
-    public static bool operator ==(ValueObject obj1, ValueObject obj2)
+    protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
-        return obj1?.Equals(obj2) ?? Equals(obj2, null);
+        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+        {
+            return false;
+        }
+        return ReferenceEquals(left, null) || left.Equals(right);
     }
 
-    public static bool operator !=(ValueObject obj1, ValueObject obj2)
+    protected static bool NotEqualOperator(ValueObject left, ValueObject right)
     {
-        return !(obj1 == obj2);
+        return !(EqualOperator(left, right));
     }
 
-    public bool Equals(ValueObject obj)
-    {
-        return Equals(obj as object);
-    }
+    protected abstract IEnumerable<object> GetEqualityComponents();
 
     public override bool Equals(object obj)
     {
-        if (obj == null || GetType() != obj.GetType()) return false;
-
-        return GetProperties().All(p => PropertiesAreEqual(obj, p))
-            && GetFields().All(f => FieldsAreEqual(obj, f));
-    }
-
-    private bool PropertiesAreEqual(object obj, PropertyInfo p)
-    {
-        return Equals(p.GetValue(this, null), p.GetValue(obj, null));
-    }
-
-    private bool FieldsAreEqual(object obj, FieldInfo f)
-    {
-        return Equals(f.GetValue(this), f.GetValue(obj));
-    }
-
-    private IEnumerable<PropertyInfo> GetProperties()
-    {
-        if (_properties.Count > 0)
+        if (obj == null || obj.GetType() != GetType())
         {
-            this._properties = GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
-                .ToList();
-
-            // Not available in Core
-            // !Attribute.IsDefined(p, typeof(IgnoreMemberAttribute))).ToList();
+            return false;
         }
 
-        return _properties;
-    }
+        var other = (ValueObject)obj;
 
-    private IEnumerable<FieldInfo> GetFields()
-    {
-        if (_fields.Count > 0)
-        {
-            this._fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
-                .ToList();
-        }
-
-        return _fields;
+        return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
     public override int GetHashCode()
     {
-        var hash = GetProperties().Select(prop => prop.GetValue(this, null)).Aggregate(17, HashValue);
-        return GetFields().Select(field => field.GetValue(this)).Aggregate(hash, HashValue);
-    }
-
-    private static int HashValue(int seed, object value)
-    {
-        var currentHash = value?.GetHashCode() ?? 0;
-        return seed * 23 + currentHash;
+        return GetEqualityComponents()
+            .Select(x => x != null ? x.GetHashCode() : 0)
+            .Aggregate((x, y) => x ^ y);
     }
 }

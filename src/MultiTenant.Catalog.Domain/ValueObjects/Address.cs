@@ -23,4 +23,13 @@ public class Address : ValueObject
     {
 
     }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Street;
+        yield return City;
+        yield return State;
+        yield return Country;
+        yield return ZipCode;
+    }
 }

@@ -5,6 +5,10 @@ namespace MultiTenant.Catalog.Domain.Entities;
 
 public class Plan : BaseEntity, IAggregateRoot
 {
+    public Plan()
+    {
+    }
+
     public Plan(Guid id, string name, string description, decimal price, int maxUserCount, int maxDatabaseSize,
         int maxStorageSize, bool isDemoPlan = false, int expiry = 30)
     {
@@ -39,7 +43,7 @@ public class Plan : BaseEntity, IAggregateRoot
     public bool IsDemoPlan { get; private set; }
     public int Expiry { get; private set; }
 
-    public ICollection<Subscription> Subscriptions { get; set; }
+    public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
     public Plan SetName(string name)
     {
@@ -65,7 +69,7 @@ public class Plan : BaseEntity, IAggregateRoot
         return this;
     }
 
-    public Plan SetMaxDatabaseSize(int maxDatabaseSize = 1024)
+    public Plan SetMaxDatabaseSize(int maxDatabaseSize = 10240)
     {
         MaxDatabaseSize = maxDatabaseSize;
         return this;
@@ -87,6 +91,12 @@ public class Plan : BaseEntity, IAggregateRoot
     {
         Expiry = Guard.Against.Negative(expiry, nameof(expiry),
             "Expiry should be greater than or equal 0");
+        return this;
+    }
+
+    public Plan SetSubscriptions(params Subscription[] subscriptions)
+    {
+        subscriptions.ToList().ForEach(subscription => Subscriptions.Add(subscription));
         return this;
     }
 }
