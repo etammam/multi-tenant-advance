@@ -1,5 +1,5 @@
 ﻿namespace MultiTenant.Catalog.Domain.Common;
 
-public abstract class BaseEntity : BaseEntity<Guid>,IBaseEntity
+public abstract class BaseEntity : BaseEntity<Guid>, IBaseEntity
 {
 }

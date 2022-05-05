@@ -38,6 +38,5 @@ public class OrganizationEntityConfiguration :
             navigationBuilder.Property<int>("Id");
             navigationBuilder.HasKey("Id");
         });
-
     }
 }

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MultiTenant.Catalog.Domain.Entities;
 using MultiTenant.Catalog.Domain.Enums;
 using MultiTenant.Catalog.Infrastructure.Persistence.Configurations;
 
@@ -7,7 +9,8 @@ namespace MultiTenant.Catalog.Infrastructure.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddCatalogContext(this IServiceCollection services, Action<CatalogConnectionConfiguration> configurations)
+    public static IServiceCollection AddCatalogContext(this IServiceCollection services,
+        Action<CatalogConnectionConfiguration> configurations)
     {
         var connectionConfiguration = new CatalogConnectionConfiguration();
         configurations.Invoke(connectionConfiguration);
@@ -53,6 +56,25 @@ public static class DependencyInjection
                 throw new ArgumentOutOfRangeException(nameof(connectionConfiguration.Provider.ToString),
                     "Database provider not supported");
         }
+
+        services.AddIdentity(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+
+            options.User.RequireUniqueEmail = true;
+        });
         return services;
+    }
+
+    private static void AddIdentity(this IServiceCollection services, Action<IdentityOptions> options)
+    {
+        services.AddIdentity<User, Role>(options)
+            .AddUserManager<UserManager<User>>()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddEntityFrameworkStores<CatalogContext>()
+            .AddDefaultTokenProviders();
     }
 }

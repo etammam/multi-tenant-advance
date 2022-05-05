@@ -1,6 +1,6 @@
+using System;
 using FluentAssertions;
 using MultiTenant.Catalog.Domain.Entities;
-using System;
 using Xunit;
 
 namespace MultiTenant.Catalog.Domain.Tests;

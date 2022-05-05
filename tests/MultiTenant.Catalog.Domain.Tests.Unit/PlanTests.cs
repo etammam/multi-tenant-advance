@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using MultiTenant.Catalog.Domain.Entities;
-using System;
+﻿using System;
 using System.Linq;
+using FluentAssertions;
+using MultiTenant.Catalog.Domain.Entities;
 using Xunit;
 
 namespace MultiTenant.Catalog.Domain.Tests;
@@ -39,7 +39,8 @@ public class PlanTests
     {
         //Give
         var instance = new Plan();
-        const string description = "Along age be rake few den to joyless resolved scape the bower friend loathed bacchanals formed of feere vaunted ye";
+        const string description =
+            "Along age be rake few den to joyless resolved scape the bower friend loathed bacchanals formed of feere vaunted ye";
         //When
         instance.SetDescription(description);
         //Then
@@ -129,13 +130,12 @@ public class PlanTests
     }
 
 
-
     [Fact]
     public void SetIsDemo_WhenCalled_ShouldSetInstancePlanBoolValue()
     {
         //Given
         var instance = new Plan();
-        bool isDemo = true;
+        var isDemo = true;
         //When
         instance.SetIsDemoPlan(isDemo);
         //Then
@@ -158,7 +158,7 @@ public class PlanTests
     {
         //Given
         var instance = new Plan();
-        int expiry = 15;
+        var expiry = 15;
         //When
         instance.SetExpiry(expiry);
         //Then
@@ -170,8 +170,8 @@ public class PlanTests
     {
         //Given
         var instance = new Plan();
-        int expiry = -15;
-        string exceptionMessage = "Expiry should be greater than or equal 0 (Parameter 'expiry')";
+        var expiry = -15;
+        var exceptionMessage = "Expiry should be greater than or equal 0 (Parameter 'expiry')";
         //When
         var action = () => instance.SetExpiry(expiry);
         //Then

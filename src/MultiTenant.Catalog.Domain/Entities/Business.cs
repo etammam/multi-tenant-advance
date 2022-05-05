@@ -5,12 +5,9 @@ namespace MultiTenant.Catalog.Domain.Entities;
 
 public class Business : BaseEntity, IAggregateRoot
 {
-    public string Name { get; private set; }
-    public string Description { get; private set; }
-
-    public Business() { }
-
-    public ICollection<Organization> Organizations { get; set; }
+    public Business()
+    {
+    }
 
     public Business(Guid id, string name, string description)
     {
@@ -23,6 +20,11 @@ public class Business : BaseEntity, IAggregateRoot
         : this(Guid.NewGuid(), name, description)
     {
     }
+
+    public string Name { get; private set; }
+    public string Description { get; private set; }
+
+    public ICollection<Organization> Organizations { get; set; }
 
     public Business SetName(string name)
     {

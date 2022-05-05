@@ -6,16 +6,8 @@ namespace MultiTenant.Catalog.Domain.Entities;
 
 public class Subscription : BaseEntity
 {
-    public Guid PlanId { get; set; }
-    public Plan Plan { get; set; }
-    public DateTime StartDate { get; set; }
-    public int Expiry { get; set; }
-    public Guid OrganizationId { get; set; }
-    public Organization Organization { get; set; }
-
     public Subscription()
     {
-
     }
 
     public Subscription(Guid id, Guid planId, DateTime startDate, int expiry)
@@ -42,8 +34,14 @@ public class Subscription : BaseEntity
     public Subscription(DateTime startDate, int expiry, Guid organizationId)
         : this(Guid.NewGuid(), startDate, expiry, organizationId)
     {
-
     }
+
+    public Guid PlanId { get; set; }
+    public Plan Plan { get; set; }
+    public DateTime StartDate { get; set; }
+    public int Expiry { get; set; }
+    public Guid OrganizationId { get; set; }
+    public Organization Organization { get; set; }
 
 
     public Subscription SetPlanId(Guid planId)

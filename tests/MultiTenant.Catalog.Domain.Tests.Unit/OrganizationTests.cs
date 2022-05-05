@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using MultiTenant.Catalog.Domain.Entities;
 using MultiTenant.Catalog.Domain.ValueObjects;
-using System;
 using Xunit;
 
 namespace MultiTenant.Catalog.Domain.Tests;
@@ -26,6 +26,7 @@ public class OrganizationTests
 
         instance.Should().BeEquivalentTo(instance);
     }
+
     [Fact]
     public void SetName_WhenCalled_ShouldSetInstanceName()
     {

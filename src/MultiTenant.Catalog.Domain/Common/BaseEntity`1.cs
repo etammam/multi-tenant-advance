@@ -2,9 +2,10 @@
 
 public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
 {
-    protected BaseEntity() => HandleGuidPrimaryKeyGeneration(); 
-
-    public TKey Id { get; set; } = default!;
+    protected BaseEntity()
+    {
+        HandleGuidPrimaryKeyGeneration();
+    }
 
     public DateTime CreationDate { get; protected set; }
 
@@ -19,12 +20,11 @@ public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
     public Guid? ModifiedById { get; protected set; }
 
     public DateTime? InactiveDate { get; protected set; }
-    
+
+    public TKey Id { get; set; } = default!;
+
     private void HandleGuidPrimaryKeyGeneration()
     {
-        if (typeof(TKey) == typeof(Guid))
-        {
-            GetType().GetProperty(nameof(Id))?.SetValue(this, Guid.NewGuid());
-        }
+        if (typeof(TKey) == typeof(Guid)) GetType().GetProperty(nameof(Id))?.SetValue(this, Guid.NewGuid());
     }
 }

@@ -9,10 +9,10 @@ public class BusinessEntityConfiguration : IEntityTypeConfiguration<Business>
     public void Configure(EntityTypeBuilder<Business> builder)
     {
         builder.ToTable("Business");
-        
+
         builder.Property(c => c.Name)
             .IsRequired();
-        builder.HasIndex(c=>c.Name) 
+        builder.HasIndex(c => c.Name)
             .IsUnique();
 
 
@@ -21,6 +21,5 @@ public class BusinessEntityConfiguration : IEntityTypeConfiguration<Business>
             .HasForeignKey(c => c.BusinessId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
-
     }
 }

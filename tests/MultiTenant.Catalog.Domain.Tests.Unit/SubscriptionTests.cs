@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using MultiTenant.Catalog.Domain.Entities;
 using MultiTenant.Catalog.Domain.Exceptions;
-using System;
 using Xunit;
 
 namespace MultiTenant.Catalog.Domain.Tests;

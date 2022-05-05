@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 .idea/
 .vs\
+watchlogs.db
+watchlogs-log.db
+appsettings.local.json

@@ -19,9 +19,8 @@ public class Organization : BaseEntity, IAggregateRoot
     }
 
     public Organization(string name, string vatNumber, Guid businessId)
-    : this(Guid.NewGuid(), name, vatNumber, businessId)
+        : this(Guid.NewGuid(), name, vatNumber, businessId)
     {
-
     }
 
     public string Name { get; set; }
@@ -71,5 +70,4 @@ public class Organization : BaseEntity, IAggregateRoot
         BusinessId = businessId;
         return this;
     }
-
 }
