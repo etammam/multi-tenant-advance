@@ -2,5 +2,5 @@
 
 public interface IUnitOfWork
 {
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default, bool isConcurrency = false);
+    Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default, bool isConcurrency = false);
 }

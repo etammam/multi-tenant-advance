@@ -11,6 +11,7 @@ using MultiTenant.Catalog.Infrastructure.Persistence.Configurations;
 using Serilog;
 using Serilog.Exceptions;
 using WatchDog;
+using WatchDog.src.Enums;
 
 namespace MultiTenant.Catalog.Api.Common;
 
@@ -35,8 +36,8 @@ internal static class DependencyContainer
         IConfiguration configuration)
     {
         var catalogConnection = new CatalogConnectionConfiguration();
-        configuration.Bind("Connection", catalogConnection);
-        services.Configure<CatalogConnectionConfiguration>(configuration.GetSection("Connection"));
+        configuration.Bind("Connections:Context", catalogConnection);
+        services.Configure<CatalogConnectionConfiguration>(configuration.GetSection("Connections:Context"));
 
         services.AddCatalogCore();
         services.AddCatalogInfrastructure(configuration);
@@ -51,7 +52,11 @@ internal static class DependencyContainer
 
     internal static IServiceCollection AddWatchInterceptor(this IServiceCollection services)
     {
-        services.AddWatchDogServices();
+        services.AddWatchDogServices(options =>
+        {
+            options.ClearTimeSchedule = WatchDogAutoClearScheduleEnum.Monthly;
+            options.IsAutoClear = false;
+        });
         return services;
     }
 

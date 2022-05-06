@@ -1,5 +1,15 @@
-﻿namespace MultiTenant.Catalog.Core.Callers.Business.Queries;
+﻿using MediatR;
+using MultiTenant.Catalog.Core.Contracts;
 
-public class GetBusinessQuery
+namespace MultiTenant.Catalog.Core.Callers.Business.Queries;
+
+public class GetBusinessQuery : IRequest<BusinessContract>
 {
+    public GetBusinessQuery(Guid id)
+    {
+        Id = id;
+    }
+
+    private Guid Id { get; }
+    public Guid GetId => Id;
 }

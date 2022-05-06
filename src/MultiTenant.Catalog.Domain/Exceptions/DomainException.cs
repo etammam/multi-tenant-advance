@@ -8,6 +8,7 @@ public class DomainException : Xeption
     public DomainException(string message)
     {
         Error.Message = message;
+        Message = message;
     }
 
     public DomainException(string message, Exception innerException)
@@ -19,4 +20,5 @@ public class DomainException : Xeption
 
     public ErrorModel Error { get; set; } = new();
     public string ExceptionType { get; set; }
+    public override string Message { get; } = string.Empty;
 }

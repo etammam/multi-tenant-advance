@@ -12,21 +12,21 @@ public class UnitOfWork : IUnitOfWork
         _databaseContext = databaseContext;
     }
 
-    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default,
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default,
         bool isConcurrency = false)
     {
-        var result = 0;
+        bool result;
         if (!isConcurrency)
-            result = await _databaseContext.SaveChangesAsync(cancellationToken);
+            result = await _databaseContext.SaveChangesAsync(cancellationToken) > 0;
         else
             try
             {
-                await _databaseContext.SaveChangesAsync(cancellationToken);
+                result = await _databaseContext.SaveChangesAsync(cancellationToken) > 0;
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 await ex.Entries.Single().ReloadAsync(cancellationToken);
-                await _databaseContext.SaveChangesAsync(cancellationToken);
+                result = await _databaseContext.SaveChangesAsync(cancellationToken) > 0;
             }
 
         return result;

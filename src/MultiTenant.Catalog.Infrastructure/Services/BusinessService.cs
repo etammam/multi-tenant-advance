@@ -1,32 +1,66 @@
-﻿using MultiTenant.Catalog.Core.Contracts;
+﻿using AutoMapper;
+using MultiTenant.Catalog.Core.Contracts;
 using MultiTenant.Catalog.Core.Services;
+using MultiTenant.Catalog.Domain.Entities;
+using MultiTenant.Catalog.Domain.Exceptions;
+using MultiTenant.Catalog.Infrastructure.Common.Repositories;
+using MultiTenant.Catalog.Infrastructure.Common.Unit;
 
 namespace MultiTenant.Catalog.Infrastructure.Services;
 
 public class BusinessService : IBusinessService
 {
-    public Task<List<BusinessContract>> GetListAsync()
+    private readonly IRepository<Business> _businessRepository;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public BusinessService(IRepository<Business> businessRepository, IUnitOfWork unitOfWork, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _businessRepository = businessRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public Task<BusinessContract> GetAsync(Guid businessId)
+    public async Task<List<BusinessContract>> GetListAsync()
     {
-        throw new NotImplementedException();
+        var businessLines = await _businessRepository.ListAsync();
+        var mapped = _mapper.Map<List<BusinessContract>>(businessLines);
+        return mapped;
     }
 
-    public Task<BusinessContract> CreateAsync(BusinessContract model)
+    public async Task<BusinessContract> GetAsync(Guid businessId)
     {
-        throw new NotImplementedException();
+        var businessLine = await _businessRepository.GetByIdAsync(businessId);
+        if (businessLine is null)
+            throw new NotFoundException(nameof(businessId), nameof(Business));
+        var mapped = _mapper.Map<BusinessContract>(businessLine);
+        return mapped;
     }
 
-    public Task<BusinessContract> UpdateAsync(BusinessContract model)
+    public async Task<BusinessContract> CreateAsync(BusinessContract model)
     {
-        throw new NotImplementedException();
+        var business = _mapper.Map<Business>(model);
+        _businessRepository.Add(business);
+        await _unitOfWork.SaveChangesAsync();
+        return _mapper.Map<BusinessContract>(business);
     }
 
-    public Task<bool> DeleteAsync(Guid businessId)
+    public async Task<BusinessContract> UpdateAsync(BusinessContract model)
     {
-        throw new NotImplementedException();
+        var businessLine = await _businessRepository.GetByIdAsync(model.Id);
+        if (businessLine is null)
+            throw new NotFoundException("businessId", nameof(Business));
+        _businessRepository.Update(_mapper.Map<Business>(model));
+        await _unitOfWork.SaveChangesAsync();
+        return model;
+    }
+
+    public async Task<bool> DeleteAsync(Guid businessId)
+    {
+        var businessLine = await _businessRepository.GetByIdAsync(businessId);
+        if (businessLine is null)
+            throw new NotFoundException(nameof(businessId), nameof(Business));
+        _businessRepository.Delete(businessLine);
+        return await _unitOfWork.SaveChangesAsync();
     }
 }

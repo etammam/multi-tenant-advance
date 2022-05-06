@@ -10,6 +10,19 @@ public class BusinessMap : Profile
     {
         CreateMap<CreateBusinessCommand, BusinessContract>()
             .ForMember(c => c.Name, opt => opt.MapFrom(x => x.Name))
-            .ForMember(c => c.Description, opt => opt.MapFrom(x => x.Description));
+            .ForMember(c => c.Description, opt => opt.MapFrom(x => x.Description))
+            .ReverseMap();
+
+        CreateMap<UpdateBusinessCommand, BusinessContract>()
+            .ForMember(c => c.Id, opt => opt.MapFrom(x => x.Id))
+            .ForMember(c => c.Name, opt => opt.MapFrom(x => x.Name))
+            .ForMember(c => c.Description, opt => opt.MapFrom(x => x.Description))
+            .ReverseMap();
+
+        CreateMap<Domain.Entities.Business, BusinessContract>()
+            .ForMember(c => c.Id, opt => opt.MapFrom(x => x.Id))
+            .ForMember(c => c.Name, opt => opt.MapFrom(x => x.Name))
+            .ForMember(c => c.Description, opt => opt.MapFrom(x => x.Description))
+            .ReverseMap();
     }
 }

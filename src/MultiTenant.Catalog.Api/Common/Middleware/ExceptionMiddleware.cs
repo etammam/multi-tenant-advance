@@ -32,9 +32,9 @@ public class ExceptionMiddleware : IMiddleware
                 error.Message = exception.Message;
                 error.StackTrace = exception.StackTrace;
                 error.InnerException = exception.InnerException;
-                error.StatusCode = (int)HttpStatusCode.BadRequest;
+                error.StatusCode = exception.Error.StatusCode;
                 error.ExceptionType = exception.ExceptionType;
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.StatusCode = exception.Error.StatusCode;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
                 await context.Response.WriteAsync(_serializationService.Serialize(error), Encoding.UTF8);
             }
