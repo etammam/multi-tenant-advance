@@ -19,4 +19,10 @@ public static class ApiRoutes
         public const string Put = BusinessBaseUrl + "/{{id}}";
         public const string Delete = BusinessBaseUrl + "/{{id}}";
     }
+
+    public static class Account
+    {
+        private const string AccountBaseUrl = BaseUrl + "account";
+        public const string Login = AccountBaseUrl + "/login";
+    }
 }

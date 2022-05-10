@@ -362,7 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 .idea/
-.vs\
+.vs/
+.vscode/
 watchlogs.db
 watchlogs-log.db
 appsettings.local.json

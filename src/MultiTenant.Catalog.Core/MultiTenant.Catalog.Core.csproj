@@ -18,4 +18,8 @@
       <ProjectReference Include="..\MultiTenant.Catalog.Domain\MultiTenant.Catalog.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Callers\Account\Queries\" />
+    </ItemGroup>
+
 </Project>

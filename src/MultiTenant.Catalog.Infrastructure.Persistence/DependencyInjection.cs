@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MultiTenant.Catalog.Domain.Entities;
+using MultiTenant.Catalog.Domain.Entities.Users;
 using MultiTenant.Catalog.Domain.Enums;
 using MultiTenant.Catalog.Infrastructure.Persistence.Configurations;
 

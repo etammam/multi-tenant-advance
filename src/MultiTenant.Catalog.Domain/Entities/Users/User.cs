@@ -4,7 +4,7 @@ using MultiTenant.Catalog.Domain.Common;
 using MultiTenant.Catalog.Domain.Enums;
 using MultiTenant.Catalog.Domain.Exceptions;
 
-namespace MultiTenant.Catalog.Domain.Entities;
+namespace MultiTenant.Catalog.Domain.Entities.Users;
 
 public sealed class User : IdentityUser<Guid>, IAggregateRoot, IBaseEntity
 {
@@ -18,8 +18,7 @@ public sealed class User : IdentityUser<Guid>, IAggregateRoot, IBaseEntity
     {
     }
 
-    public User(Guid userId, string name, string email, Gender gender, string username, string phoneNumber,
-        DateTime dateOfBirth)
+    public User(Guid userId, string name, string email, Gender gender, string username, string phoneNumber)
     {
         Id = userId;
         SetEmail(email);
@@ -27,6 +26,12 @@ public sealed class User : IdentityUser<Guid>, IAggregateRoot, IBaseEntity
         SetGender(gender);
         SetUsername(username);
         SetPhoneNumber(phoneNumber);
+    }
+
+    public User(Guid userId, string name, string email, Gender gender, string username, string phoneNumber,
+        DateTime dateOfBirth)
+        : this(userId, name, email, gender, username, phoneNumber)
+    {
         SetDateOfBirth(dateOfBirth);
     }
 
@@ -61,6 +66,7 @@ public sealed class User : IdentityUser<Guid>, IAggregateRoot, IBaseEntity
     public void SetEmail(string email)
     {
         Email = Guard.Against.NotEmailAddress(email, nameof(email));
+        NormalizedEmail = Guard.Against.NotEmailAddress(email, nameof(email)).ToUpper();
     }
 
     public void SetEmailConfirmation(bool confirmed)

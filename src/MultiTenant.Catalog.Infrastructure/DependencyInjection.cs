@@ -32,7 +32,7 @@ public static class DependencyInjection
     private static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         //Generic
-        services.AddSingleton<ITokenService, TokenService>();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ISerializerService, SerializerService>();
         services.AddTransient<IDateTimeService, DateTimeService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -41,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<IPlanService, PlanService>();
         services.AddScoped<IResourceService, ResourceService>();
         services.AddScoped<ITenantService, TenantService>();
+        services.AddScoped<IAccountService, AccountService>();
 
         return services;
     }

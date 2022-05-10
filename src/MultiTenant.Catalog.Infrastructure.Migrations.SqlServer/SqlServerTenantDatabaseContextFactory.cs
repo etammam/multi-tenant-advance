@@ -11,7 +11,7 @@ public class SqlServerTenantDatabaseContextFactory
     {
         var builder = new DbContextOptionsBuilder<CatalogContext>();
         builder.UseSqlServer(
-            "Data Source=192.168.1.60; User Id=sa; Password=Code@1903; Initial Catalog= Tenant-Catalog;",
+            "Data Source=.;Initial Catalog=Tenant-Catalog;User Id=Sa;Password=MadCode@01100072682;",
             config =>
                 config.MigrationsAssembly("MultiTenant.Catalog.Infrastructure.Migrations.SqlServer"));
         return new SqlServerCatalogContext(builder.Options);

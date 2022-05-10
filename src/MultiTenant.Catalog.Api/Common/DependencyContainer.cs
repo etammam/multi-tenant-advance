@@ -17,7 +17,7 @@ namespace MultiTenant.Catalog.Api.Common;
 
 internal static class DependencyContainer
 {
-    public static Action<HostBuilderContext, LoggerConfiguration> ConfigureLogger =>
+    internal static Action<HostBuilderContext, LoggerConfiguration> ConfigureLogger =>
         (context, configuration) =>
         {
             var env = context.HostingEnvironment;
@@ -123,6 +123,7 @@ internal static class DependencyContainer
 
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
         var database = scope?.ServiceProvider.GetRequiredService<ICatalogContext>().Database;
+        database?.EnsureCreated();
         database?.Migrate();
         return app;
     }

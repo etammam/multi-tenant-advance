@@ -1,14 +1,16 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Immutable;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MultiTenant.Catalog.Core.Common;
 using MultiTenant.Catalog.Core.Configurations;
 using MultiTenant.Catalog.Core.Contracts;
+using MultiTenant.Catalog.Domain.Entities.Users;
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MultiTenant.Catalog.Infrastructure.Services;
 
@@ -16,10 +18,12 @@ public class TokenService : ITokenService
 {
     private readonly JwtConfigurations _jwtConfigurations;
     private readonly byte[] _secret;
+    private readonly UserManager<User> _userManager;
     private readonly ConcurrentDictionary<string, RefreshToken> _usersRefreshTokens;
 
-    public TokenService(IOptions<JwtConfigurations> jwtConfigurations)
+    public TokenService(IOptions<JwtConfigurations> jwtConfigurations, UserManager<User> userManager)
     {
+        _userManager = userManager;
         _jwtConfigurations = jwtConfigurations.Value;
         _usersRefreshTokens = new ConcurrentDictionary<string, RefreshToken>();
         _secret = Encoding.ASCII.GetBytes(jwtConfigurations.Value.Secret);
@@ -40,7 +44,7 @@ public class TokenService : ITokenService
         foreach (var refreshToken in refreshTokens) _usersRefreshTokens.TryRemove(refreshToken.Key, out _);
     }
 
-    public AuthenticationResult GenerateTokens(string email, Claim[] claims, DateTime now)
+    public async Task<AuthenticationResult> GenerateTokenAsync(User user, Claim[] claims, DateTime now)
     {
         var shouldAddAudienceClaim =
             string.IsNullOrWhiteSpace(claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
@@ -53,15 +57,14 @@ public class TokenService : ITokenService
                 SecurityAlgorithms.HmacSha256Signature));
         var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
-        var refreshToken = new RefreshToken(email, GenerateRefreshTokenString(),
+        var refreshToken = new RefreshToken(user.Email, GenerateRefreshTokenString(),
             now.AddMinutes(_jwtConfigurations.RefreshTokenExpiration));
 
         _usersRefreshTokens.AddOrUpdate(refreshToken.TokenString, refreshToken, (_, _) => refreshToken);
-
         return new AuthenticationResult(accessToken, refreshToken);
     }
 
-    public AuthenticationResult Refresh(string refreshToken, string accessToken, DateTime now)
+    public async Task<AuthenticationResult> Refresh(string refreshToken, string accessToken, DateTime now)
     {
         var (principal, jwtToken) = DecodeJwtToken(accessToken);
         if (jwtToken == null || !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature))
@@ -72,7 +75,11 @@ public class TokenService : ITokenService
         if (existingRefreshToken.UserName != userName || existingRefreshToken.ExpireAt < now)
             throw new SecurityTokenException("Invalid token");
 
-        return GenerateTokens(userName, principal.Claims.ToArray(), now);
+        var userAccount = await _userManager.FindByEmailAsync(userName);
+        if (userAccount == null)
+            throw new SecurityTokenException("user not found");
+
+        return await GenerateTokenAsync(userAccount, principal.Claims.ToArray(), now);
     }
 
     public (ClaimsPrincipal, JwtSecurityToken) DecodeJwtToken(string token)

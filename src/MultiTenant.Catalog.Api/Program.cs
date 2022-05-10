@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSetupOfVersionedSwagger(builder.Configuration,
     typeof(Program).Assembly.GetName()
         .Name ??
-    nameof(Assemblage));
+    nameof(MultiTenant));
 builder.Services.AddCustomServices();
 builder.Services.AddCatalog(builder.Configuration);
 builder.Services.AddWatchInterceptor();

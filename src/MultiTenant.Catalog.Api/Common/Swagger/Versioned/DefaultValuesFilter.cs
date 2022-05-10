@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Assemblage.Api.Common.Swagger.Versioned;
+namespace MultiTenant.Catalog.Api.Common.Swagger.Versioned;
 
 public class DefaultValuesFilter : IOperationFilter
 {

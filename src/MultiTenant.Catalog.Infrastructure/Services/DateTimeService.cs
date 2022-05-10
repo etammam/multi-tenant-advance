@@ -6,11 +6,11 @@ public class DateTimeService : IDateTimeService
 {
     public DateTime Now()
     {
-        throw new NotImplementedException();
+        return DateTime.UtcNow;
     }
 
     public DateTime Today()
     {
-        throw new NotImplementedException();
+        return DateTime.Today;
     }
 }

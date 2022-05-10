@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MultiTenant.Catalog.Api.Common;
 using MultiTenant.Catalog.Core.Callers.Business.Commands;
 using MultiTenant.Catalog.Core.Callers.Business.Queries;
 using MultiTenant.Catalog.Core.Contracts;
+using MultiTenant.Catalog.Domain.Constants;
 
 namespace MultiTenant.Catalog.Api.Controllers;
 
 public class BusinessController : BaseController
 {
+    [Authorize(Roles = RoleNames.Business.CanViewAll)]
     [HttpGet(ApiRoutes.Business.GetList)]
     public async Task<ActionResult<List<BusinessContract>>> GetBusinessList()
     {
